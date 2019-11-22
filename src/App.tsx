@@ -61,8 +61,6 @@ export const App: React.FC<{}> = () => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={async (values, { setSubmitting }) => {
-          determineNextStep();
-
           if (step === formSteps) {
             await new Promise((resolve) => {
               window.setTimeout(() => {
@@ -78,7 +76,11 @@ export const App: React.FC<{}> = () => {
           return (
             <>
               <div style={{marginBottom: '40px'}}>{JSON.stringify(props)}</div>
-              <form onSubmit={props.handleSubmit}>
+              <form onSubmit={(e) => {
+                props.handleSubmit(e);
+                console.log(props);
+                determineNextStep();
+              }}>
                 {({
                   1: <Step1 {...props} />,
                   2: <Step2 {...props} />,
