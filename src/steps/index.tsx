@@ -11,13 +11,13 @@ const FieldWrapper = styled.div`
   }
 `;
 
-export const Step0 = (props: any) => (
+export const Step1 = (props: any) => (
   <fieldset>
     <div>{JSON.stringify(props.touched)}</div>
     Step 1
     <FieldWrapper>
       <Field name="1.firstname" type="text" placeholder="First Name" />
-      <ErrorMessage name="1.firstname" component="div" />
+      {<ErrorMessage name="1.firstname" component="div" />}
     </FieldWrapper>
     <FieldWrapper>
       <Field name="1.lastname" type="text" placeholder="Last Name" />
@@ -26,7 +26,7 @@ export const Step0 = (props: any) => (
   </fieldset>
 );
 
-export const Step1 = (props: any) => (
+export const Step2 = (props: any) => (
   <fieldset>
     Step 2
     <FieldWrapper>
@@ -36,7 +36,7 @@ export const Step1 = (props: any) => (
   </fieldset>
 );
 
-export const StepFinal = (props: any) => (
+export const Step3 = (props: any) => (
   <fieldset>
     Step3
     <FieldWrapper>
