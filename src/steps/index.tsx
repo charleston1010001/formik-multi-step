@@ -11,20 +11,24 @@ const FieldWrapper = styled.div`
   }
 `;
 
-export const Step1 = (props: any) => (
-  <fieldset>
-    <div>{JSON.stringify(props.touched)}</div>
-    Step 1
-    <FieldWrapper>
-      <Field name="1.firstname" type="text" placeholder="First Name" />
-      {<ErrorMessage name="1.firstname" component="div" />}
-    </FieldWrapper>
-    <FieldWrapper>
-      <Field name="1.lastname" type="text" placeholder="Last Name" />
-      <ErrorMessage name="1.lastname" component="div" />
-    </FieldWrapper>
-  </fieldset>
-);
+export const Step1 = (props: any) => {
+  const {errors, touched} = props;
+  return (
+    <fieldset>
+      Step 1
+      <FieldWrapper>
+        <Field name="1.firstname" type="text" placeholder="First Name" />
+        {errors['1']?.firstname && touched['1']?.firstname && <div>{errors['1'].firstname}</div>}
+        {/*<ErrorMessage name="1.firstname" component="div" />*/}
+      </FieldWrapper>
+      <FieldWrapper>
+        <Field name="1.lastname" type="text" placeholder="Last Name" />
+        {errors['1']?.lastname && touched['1']?.lastname && <div>{errors['1'].lastname}</div>}
+        {/*<ErrorMessage name="1.lastname" component="div" />*/}
+      </FieldWrapper>
+    </fieldset>
+  );
+};
 
 export const Step2 = (props: any) => (
   <fieldset>
