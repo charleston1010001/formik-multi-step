@@ -1,6 +1,6 @@
 import './App.scss';
-import React, { useState, useCallback } from 'react';
-import { Formik } from 'formik';
+import React, {useEffect, useState, useCallback, FormEvent, MouseEvent, ReactNode} from 'react';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Step1, Step2, Step3  } from './steps';
 import {TextValidation, EmailValidation } from './validation-schema';
@@ -44,18 +44,6 @@ const formSteps = 3;
 
 export const App: React.FC<{}> = () => {
   const [step, setStep] = useState(1);
-  const nextStep = useCallback(() => {setStep(step + 1)}, [step]);
-  const prevStep = useCallback(() => setStep(step - 1), [step]);
-
-  const determineNextStep = (errors: any) => {
-    if (!errors[step]) {
-      nextStep();
-    }
-  };
-
-  const resetTouched = (setTouched: any, touched: any, errors: any) => {
-
-  };
 
   const sendForm = async (values: any, { setSubmitting }: any) => {
     if (step === formSteps) {
@@ -64,49 +52,60 @@ export const App: React.FC<{}> = () => {
           setSubmitting(false);
           console.log(values);
           resolve()
-        }, 2000)
-      })
+        }, 1000)
+      });
     }
   };
 
+  const formik = useFormik({
+    validateOnChange: true,
+    validateOnBlur: true,
+    initialValues: initialValues,
+    validationSchema: validationSchema,
+    onSubmit: sendForm,
+  });
+
+  const {handleSubmit, errors, setTouched, touched, isValid, isSubmitting, isValidating, values} = formik;
+
+  const nextStep = useCallback(() => setStep(step + 1), [step]);
+  const prevStep = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setStep(step - 1);
+  }, [step]);
+
+  const checkNextStep = (errors: any, touched: any) => {
+    if (!errors[step] && touched[step] && step < formSteps) {
+      nextStep();
+      setTouched({});
+    }
+  };
+
+  useEffect(() => {
+    if (!isSubmitting && !isValidating && step < formSteps) {
+      checkNextStep(errors, touched);
+    }
+  }, [isSubmitting, isValidating]);
+
   return (
     <AppWrapper>
-      <Formik
-        validateOnMount={true}
-        validateOnChange={true}
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={sendForm}
-      >
-        {(props: any) => {
-          return (
-            <>
-              <form onSubmit={(e) => {
-                props.handleSubmit(e);
-                console.log(props);
-                determineNextStep(props.errors);
-                resetTouched(props.setTouched, props.touched, props.errors);
-              }}>
-                {({
-                  1: <Step1 {...props} />,
-                  2: <Step2 {...props} />,
-                  3: <Step3 {...props} />
-                } as any)[step] || null}
-                <ButtonLayout>
-                  {step > 1 && <button onClick={prevStep} type="submit">Back</button>}
-                  {step < formSteps ?
-                    <RightBtn type="submit">Next</RightBtn>
-                    :
-                    <RightBtn disabled={!props.isValid || props.isSubmitting} type="submit">Send</RightBtn>
-                  }
-                </ButtonLayout>
-                <pre style={{marginTop: '40px'}}>{JSON.stringify({...props.values, valid: props.isValid}, null, 2)}</pre>
-                <pre style={{marginTop: '40px'}}>{JSON.stringify(props, null, 2)}</pre>
-              </form>
-            </>
-          )
-        }}
-      </Formik>
+      <form onSubmit={async (e: FormEvent<HTMLFormElement>) => {
+        handleSubmit(e);
+      }}>
+        {({
+          1: <Step1 {...formik} />,
+          2: <Step2 {...formik} />,
+          3: <Step3 {...formik} />
+        } as {[value: number]: ReactNode})[step] || null}
+        <ButtonLayout>
+          {step > 1 && <button className='btn btn-secondary' onClick={prevStep}>Back</button>}
+          {step < formSteps
+            ? <RightBtn className='btn btn-primary' type="submit">Next</RightBtn>
+            : <RightBtn className='btn btn-primary' disabled={!isValid || isSubmitting} type="submit">Send</RightBtn>
+          }
+        </ButtonLayout>
+        <pre style={{marginTop: '40px'}}>{JSON.stringify({...values, valid: isValid}, null, 2)}</pre>
+        <pre style={{marginTop: '40px'}}>{JSON.stringify(formik, null, 2)}</pre>
+      </form>
     </AppWrapper>
-  )
+  );
 };
