@@ -60,9 +60,9 @@ export const App: React.FC<{}> = () => {
             ...values,
             3: {
               file: {
-                name: values['3'].file.name,
-                type: values['3'].file.type,
-                size: values['3'].file.size,
+                name: values[3].file.name,
+                type: values[3].file.type,
+                size: values[3].file.size,
               }
             }
           }, null, 2));
@@ -102,7 +102,6 @@ export const App: React.FC<{}> = () => {
     // eslint-disable-next-line
   }, [isSubmitting, isValidating]);
 
-  // console.log(formik);
   return (
     <AppWrapper>
       <form onSubmit={async (e: FormEvent<HTMLFormElement>) => {
@@ -117,11 +116,23 @@ export const App: React.FC<{}> = () => {
         <ButtonLayout>
           {step > 1 && <button className='btn btn-secondary' onClick={prevStep}>Back</button>}
           {step < formSteps
-            ? <RightBtn className='btn btn-primary' type="submit">Next</RightBtn>
-            : <RightBtn className='btn btn-primary' disabled={!isValid || isSubmitting} type="submit">Send</RightBtn>
+            ?
+            <RightBtn
+              className='btn btn-primary'
+              type="submit"
+              formNoValidate={true}>
+              Next
+            </RightBtn>
+            :
+            <RightBtn
+              className='btn btn-primary'
+              disabled={!isValid || isSubmitting}
+              type="submit"
+              formNoValidate={true}>
+              Send
+            </RightBtn>
           }
         </ButtonLayout>
-        {/* <pre style={{marginTop: '40px'}}>{JSON.stringify({...values, valid: isValid}, null, 2)}</pre> */}
       </form>
     </AppWrapper>
   );

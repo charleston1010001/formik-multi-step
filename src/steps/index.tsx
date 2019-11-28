@@ -31,21 +31,23 @@ export const Step1 = (props: any) => {
         id='1.firstname'
         name='1.firstname'
         type='text'
-        value={values['1'].firstname}
+        value={values[1].firstname}
         onChange={handleChange}
         onBlur={handleBlur}
-        error={errors['1']?.firstname && touched['1']?.firstname && errors['1'].firstname}
+        error={errors[1]?.firstname && touched[1]?.firstname && errors[1].firstname}
         setFieldTouched={setFieldTouched}
+        placeholder='First Name'
       />
       <InputField
         id='1.lastname'
         name='1.lastname'
         type='text'
-        value={values['1'].lastname}
+        value={values[1].lastname}
         onChange={handleChange}
         onBlur={handleBlur}
-        error={errors['1']?.lastname && touched['1']?.lastname && errors['1'].lastname}
+        error={errors[1]?.lastname && touched[1]?.lastname && errors[1].lastname}
         setFieldTouched={setFieldTouched}
+        placeholder='Last Name'
       />
     </fieldset>
   );
@@ -61,11 +63,12 @@ export const Step2 = (props: any) => {
         id='2.email'
         name='2.email'
         type='email'
-        value={values['2'].email}
+        value={values[2].email}
         onChange={handleChange}
         onBlur={handleBlur}
-        error={errors['2']?.email && touched['2']?.email && errors['2'].email}
+        error={errors[2]?.email && touched[2]?.email && errors[2].email}
         setFieldTouched={setFieldTouched}
+        placeholder='E-Mail'
       />
     </fieldset>
   );
@@ -78,7 +81,7 @@ export const Step3 = (props: any) => {
     setFieldValue('3.file', e?.currentTarget?.files && e?.currentTarget?.files[0]);
   };
 
-  const error = errors['3']?.file && touched['3']?.file;
+  const error = errors[3]?.file && touched[3]?.file;
 
   return (
     <fieldset>
@@ -94,8 +97,8 @@ export const Step3 = (props: any) => {
             onChange={setFile}
           />
           <label htmlFor='3.file'><FileBtn className='btn btn-primary file-button'>Select file</FileBtn></label>
-          {error && <div style={{color: 'red', fontSize: '12px'}}>{errors['3'].file}</div>}
-          {values['3'].file && <Thumbnail file={values['3'].file}/>}
+          {error && <div style={{color: 'red', fontSize: '12px'}}>{errors[3].file}</div>}
+          {values[3].file && <Thumbnail file={values[3].file}/>}
         </div>
       </FieldWrapper>
     </fieldset>
@@ -113,9 +116,9 @@ export const Step4 = (props: any) => {
           ...values,
           3: {
             file: {
-              name: values['3'].file.name,
-              type: values['3'].file.type,
-              size: values['3'].file.size,
+              name: values[3].file.name,
+              type: values[3].file.type,
+              size: values[3].file.size,
             }
           }
         }, null, 3)}

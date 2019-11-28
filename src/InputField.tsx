@@ -28,10 +28,11 @@ interface IProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   setFieldTouched?: (field: string, isTouched: boolean) => void;
   invisible?: boolean;
+  placeholder?: string
 }
 
 export const InputField: React.FC<IProps> = (props: IProps) => {
-  const {id, name, type, value, onChange, onBlur, error, setFieldTouched} = props;
+  const {id, name, type, value, onChange, onBlur, error, setFieldTouched, placeholder} = props;
 
   const onKeyChange = (e: ChangeEvent<HTMLInputElement>) => {
     !!setFieldTouched && setFieldTouched(name, true);
@@ -47,6 +48,7 @@ export const InputField: React.FC<IProps> = (props: IProps) => {
         value={value}
         onChange={onKeyChange}
         onBlur={onBlur}
+        placeholder={placeholder}
       />
       {error && <Error>{error}</Error>}
     </FieldWrapper>
