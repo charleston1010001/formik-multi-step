@@ -1,0 +1,10 @@
+.file-upload {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+a:not([href]):not([tabindex]).file-button {
+  color: #fff;
+  cursor: pointer;
+}
