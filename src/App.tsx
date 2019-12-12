@@ -74,7 +74,7 @@ export const App: React.FC<{}> = () => {
 
   const formik = useFormik({
     validateOnChange: true,
-    validateOnBlur: true,
+    validateOnBlur: false,
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: sendForm,
@@ -89,7 +89,7 @@ export const App: React.FC<{}> = () => {
   }, [step]);
 
   const checkNextStep = useCallback((errors: any, touched: any) => {
-    if (!errors[step] && touched[step] && step < formSteps) {
+    if (!errors[step] && touched[step]) {
       nextStep();
       setTouched({});
     }
